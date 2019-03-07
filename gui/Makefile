@@ -15,9 +15,9 @@
 #CXX = clang++
 
 EXE = WordListGui
-SOURCES = main.cpp
-SOURCES += ./imgui/imgui_impl_glfw.cpp ./imgui/imgui_impl_opengl3.cpp
-SOURCES += ./imgui/imgui.cpp ./imgui/imgui_draw.cpp ./imgui/imgui_demo.cpp ./imgui/imgui_widgets.cpp
+SOURCES = main.cpp 
+SOURCES += ./imgui/imgui_impl_glfw.cpp ./imgui/imgui_impl_opengl3.cpp 
+SOURCES += ./imgui/imgui.cpp ./imgui/imgui_draw.cpp ./imgui/imgui_demo.cpp ./imguifilesystem.cpp ./imgui/imgui_widgets.cpp
 OBJS = $(addsuffix .o, $(basename $(notdir $(SOURCES))))
 UNAME_S := $(shell uname -s)
 

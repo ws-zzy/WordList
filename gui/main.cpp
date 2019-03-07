@@ -2,11 +2,13 @@
 // If you are new to dear imgui, see examples/README.txt and documentation at the top of imgui.cpp.
 // (GLFW is a cross-platform general purpose library for handling windows, inputs, OpenGL/Vulkan graphics context creation, etc.)
 
+#include "imguifilesystem.h"
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
 #include <stdio.h>
-
+#include <fstream>
+#include <iostream>
 // About OpenGL function loaders: modern OpenGL doesn't have a standard header file and requires individual function pointers to be loaded manually.
 // Helper libraries are often used for this purpose! Here we are supporting a few common ones: gl3w, glew, glad.
 // You may use another loader/header of your choice (glext, glLoadGen, etc.), or chose to manually implement your own.
@@ -34,82 +36,33 @@ static void glfw_error_callback(int error, const char* description)
 {
     fprintf(stderr, "Glfw Error %d: %s\n", error, description);
 }
-
-static void ShowExampleMenuFile()
+bool OpenButtonPressed, SaveButtonPressed;
+static void ShowMenuFile()
 {
-    ImGui::MenuItem("(dummy menu)", NULL, false, false);
-    if (ImGui::MenuItem("New")) {}
-    if (ImGui::MenuItem("Open", "Ctrl+O")) {}
-    if (ImGui::BeginMenu("Open Recent"))
-    {
-        ImGui::MenuItem("fish_hat.c");
-        ImGui::MenuItem("fish_hat.inl");
-        ImGui::MenuItem("fish_hat.h");
-        if (ImGui::BeginMenu("More.."))
-        {
-            ImGui::MenuItem("Hello");
-            ImGui::MenuItem("Sailor");
-            if (ImGui::BeginMenu("Recurse.."))
-            {
-                ShowExampleMenuFile();
-                ImGui::EndMenu();
-            }
-            ImGui::EndMenu();
-        }
-        ImGui::EndMenu();
+    if (ImGui::MenuItem("Open", "Ctrl+O")) {
+        OpenButtonPressed = true;
     }
-    if (ImGui::MenuItem("Save", "Ctrl+S")) {}
-    if (ImGui::MenuItem("Save As..")) {}
+    
+    if (ImGui::MenuItem("Save As", "Ctrl+S")) {
+        SaveButtonPressed = true;
+    }
     ImGui::Separator();
-    if (ImGui::BeginMenu("Options"))
-    {
-        static bool enabled = true;
-        ImGui::MenuItem("Enabled", "", &enabled);
-        ImGui::BeginChild("child", ImVec2(0, 60), true);
-        for (int i = 0; i < 10; i++)
-            ImGui::Text("Scrolling Text %d", i);
-        ImGui::EndChild();
-        static float f = 0.5f;
-        static int n = 0;
-        static bool b = true;
-        ImGui::SliderFloat("Value", &f, 0.0f, 1.0f);
-        ImGui::InputFloat("Input", &f, 0.1f);
-        ImGui::Combo("Combo", &n, "Yes\0No\0Maybe\0\0");
-        ImGui::Checkbox("Check", &b);
-        ImGui::EndMenu();
+    if (ImGui::MenuItem("Quit", "Alt+F4")) {
+        exit(0);
     }
-    if (ImGui::BeginMenu("Colors"))
-    {
-        float sz = ImGui::GetTextLineHeight();
-        for (int i = 0; i < ImGuiCol_COUNT; i++)
-        {
-            const char* name = ImGui::GetStyleColorName((ImGuiCol)i);
-            ImVec2 p = ImGui::GetCursorScreenPos();
-            ImGui::GetWindowDrawList()->AddRectFilled(p, ImVec2(p.x+sz, p.y+sz), ImGui::GetColorU32((ImGuiCol)i));
-            ImGui::Dummy(ImVec2(sz, sz));
-            ImGui::SameLine();
-            ImGui::MenuItem(name);
-        }
-        ImGui::EndMenu();
-    }
-    if (ImGui::BeginMenu("Disabled", false)) // Disabled
-    {
-        IM_ASSERT(0);
-    }
-    if (ImGui::MenuItem("Checked", NULL, true)) {}
-    if (ImGui::MenuItem("Quit", "Alt+F4")) {}
 }
 
 // Demonstrate creating a fullscreen menu bar and populating it.
-static void ShowExampleAppMainMenuBar()
+static void ShowMainMenuBar()
 {
-    if (ImGui::BeginMainMenuBar())
+    if (ImGui::BeginMenuBar())
     {
         if (ImGui::BeginMenu("File"))
         {
-            ShowExampleMenuFile();
+            ShowMenuFile();
             ImGui::EndMenu();
         }
+        
         if (ImGui::BeginMenu("Edit"))
         {
             if (ImGui::MenuItem("Undo", "CTRL+Z")) {}
@@ -120,8 +73,62 @@ static void ShowExampleAppMainMenuBar()
             if (ImGui::MenuItem("Paste", "CTRL+V")) {}
             ImGui::EndMenu();
         }
-        ImGui::EndMainMenuBar();
+        ImGui::EndMenuBar();
     }
+}
+
+static void OpenButtonMonitor() {
+    static ImGuiFs::Dialog openDlg;                             // one per dialog (and must be static)
+    // ImGui::Text("Chosen file: \"%s\"", OpenButtonPressed ? "True" : "False");
+    openDlg.chooseFileDialog(OpenButtonPressed);              // see other dialog types and the full list of arguments for advanced usage
+    if (strlen(openDlg.getChosenPath())>0) {
+        ImGui::Text("Open file: \"%s\"",openDlg.getChosenPath());
+    }
+
+    // If you want to copy the (valid) returned path somewhere, you can use something like:
+    char myPath[ImGuiFs::MAX_PATH_BYTES];
+    if (strlen(openDlg.getChosenPath())>0) {
+        strcpy(myPath,openDlg.getChosenPath());
+    }
+}
+
+static void SaveButtonMonitor() {
+    static ImGuiFs::Dialog saveDlg;                             // one per dialog (and must be static)
+    // ImGui::Text("Chosen file: \"%s\"", SaveButtonPressed ? "True" : "False");
+    saveDlg.saveFileDialog(SaveButtonPressed);              // see other dialog types and the full list of arguments for advanced usage
+    if (strlen(saveDlg.getChosenPath())>0) {
+        ImGui::Text("Save file: \"%s\"",saveDlg.getChosenPath());
+    }
+
+    // If you want to copy the (valid) returned path somewhere, you can use something like:
+    char myPath[ImGuiFs::MAX_PATH_BYTES];
+    if (strlen(saveDlg.getChosenPath())>0) {
+        strcpy(myPath,saveDlg.getChosenPath());
+    }
+}
+
+bool w , c , h , t , r;
+static void FlagCheckBox() {
+    ImGui::Checkbox("-w", &w);      // Edit bools storing our window open/close state
+    c = c & !w;
+    ImGui::SameLine();
+    ImGui::Checkbox("-c", &c);      // Edit bools storing our window open/close state
+    w = w & !c;
+    ImGui::SameLine();
+    ImGui::Checkbox("-h", &h);      // Edit bools storing our window open/close state
+    t = t & !h;
+    ImGui::SameLine();
+    ImGui::Checkbox("-t", &t);      // Edit bools storing our window open/close state
+    h = h & !t;
+    ImGui::SameLine();
+    ImGui::Checkbox("-r", &r);      // Edit bools storing our window open/close state
+    ImGui::SameLine();
+    ImGui::Text("char:");
+    ImGui::SameLine();
+    static char word[16] = "1";
+    ImGui::InputTextEx("##source", word, 2, ImVec2(ImGui::GetTextLineHeight() * 1.5, 0), ImGuiInputTextFlags_AllowTabInput);
+    ImGui::SameLine();
+    ImGui::Button("submit");
 }
 
 int main(int, char**)
@@ -146,10 +153,11 @@ int main(int, char**)
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
     //glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);  // 3.2+ only
     //glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);            // 3.0+ only
+    glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 #endif
 
     // Create window with graphics context
-    GLFWwindow* window = glfwCreateWindow(1280, 720, "Longest Word List", NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(540, 320, "Longest Word List", NULL, NULL);
     if (window == NULL)
         return 1;
     glfwMakeContextCurrent(window);
@@ -201,9 +209,11 @@ int main(int, char**)
     //ImFont* font = io.Fonts->AddFontFromFileTTF("c:\\Windows\\Fonts\\ArialUni.ttf", 18.0f, NULL, io.Fonts->GetGlyphRangesJapanese());
     //IM_ASSERT(font != NULL);
 
-    bool show_demo_window = true;
-    bool show_another_window = false;
+    bool show_another_window = true;
+    ImGuiWindowFlags window_flag = ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_MenuBar;
     ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
+    ImVec2 window_size = ImVec2(540.0f, 320.0f);
+    ImVec2 window_pos  = ImVec2(0.0f, 0.0f); 
 
     // Main loop
     while (!glfwWindowShouldClose(window))
@@ -223,7 +233,36 @@ int main(int, char**)
 
         // 2. Show a simple window that we create ourselves. We use a Begin/End pair to created a named window.
         {
-            ShowExampleAppMainMenuBar();
+            ImGui::SetNextWindowSize(window_size);
+            ImGui::SetNextWindowPos(window_pos);
+            if (!ImGui::Begin("ImGui Demo", &show_another_window, window_flag))
+            {
+                // Early out if the window is collapsed, as an optimization.
+                ImGui::End();
+                break;
+            }
+            ShowMainMenuBar();
+            OpenButtonMonitor();
+            SaveButtonMonitor();
+            ImGui::Text("Input");
+            static char inputText[1024*16] = 
+            "zzy\n"
+            "ycd\n"
+            "wb\n";
+            ImGuiInputTextFlags inputFlags = ImGuiInputTextFlags_AllowTabInput;
+            ImGui::InputTextMultiline("Input", inputText, IM_ARRAYSIZE(inputText), ImVec2(-1.0f, ImGui::GetTextLineHeight() * 8), inputFlags);
+            
+            ImGui::Separator();
+
+            ImGui::Text("Output");
+            static char outputText[1024*16] = 
+            "zzy\n"
+            "ycd\n";
+            ImGuiInputTextFlags outputFlags = ImGuiInputTextFlags_AllowTabInput | ImGuiInputTextFlags_ReadOnly;
+            ImGui::InputTextMultiline("outputput", outputText, IM_ARRAYSIZE(outputText), ImVec2(-1.0f, ImGui::GetTextLineHeight() * 8), outputFlags); 
+            //ImGui::Text("context: \"%s\"", outputText);
+            FlagCheckBox();
+            ImGui::End();
         }
 
         // Rendering
