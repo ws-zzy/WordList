@@ -1,0 +1,10 @@
+﻿unittest1.obj : error LNK2005: "unsigned int (* useEdge)[26]" (?useEdge@@3PAY0BK@IA) 已经在 WordlistProject.obj 中定义
+unittest1.obj : error LNK2005: "int ansChar" (?ansChar@@3HA) 已经在 WordlistProject.obj 中定义
+unittest1.obj : error LNK2005: "int ansLen" (?ansLen@@3HA) 已经在 WordlistProject.obj 中定义
+unittest1.obj : error LNK2005: "int ansNum" (?ansNum@@3HA) 已经在 WordlistProject.obj 中定义
+unittest1.obj : error LNK2005: "char * * ansWords" (?ansWords@@3PAPADA) 已经在 WordlistProject.obj 中定义
+unittest1.obj : error LNK2005: "char * * nowWords" (?nowWords@@3PAPADA) 已经在 WordlistProject.obj 中定义
+unittest1.obj : error LNK2005: "int * maxAns" (?maxAns@@3PAHA) 已经在 WordlistProject.obj 中定义
+unittest1.obj : error LNK2005: "int headnow" (?headnow@@3HA) 已经在 WordlistProject.obj 中定义
+    正在创建库 D:\se\WordList\WordlistProject\Debug\WordUnitTest.lib 和对象 D:\se\WordList\WordlistProject\Debug\WordUnitTest.exp
+D:\se\WordList\WordlistProject\Debug\WordUnitTest.dll : fatal error LNK1169: 找到一个或多个多重定义的符号

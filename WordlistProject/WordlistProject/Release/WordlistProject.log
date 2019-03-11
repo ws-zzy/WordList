@@ -1,0 +1,3 @@
+﻿  pch.cpp
+  WordlistProject.cpp
+d:\se\wordlist\wordlistproject\wordlistproject\wordlistproject.cpp(321): error C2065: “j”: 未声明的标识符

@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.28010.2041
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WordlistProject", "WordlistProject\WordlistProject.vcxproj", "{477F6391-6C44-4029-82D0-09B0EF8983DD}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WordUnitTest", "WordUnitTest\WordUnitTest.vcxproj", "{BD4B58D1-9D77-42C0-A2E8-DD93143B452E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -21,6 +23,14 @@ Global
 		{477F6391-6C44-4029-82D0-09B0EF8983DD}.Release|x64.Build.0 = Release|x64
 		{477F6391-6C44-4029-82D0-09B0EF8983DD}.Release|x86.ActiveCfg = Release|Win32
 		{477F6391-6C44-4029-82D0-09B0EF8983DD}.Release|x86.Build.0 = Release|Win32
+		{BD4B58D1-9D77-42C0-A2E8-DD93143B452E}.Debug|x64.ActiveCfg = Debug|x64
+		{BD4B58D1-9D77-42C0-A2E8-DD93143B452E}.Debug|x64.Build.0 = Debug|x64
+		{BD4B58D1-9D77-42C0-A2E8-DD93143B452E}.Debug|x86.ActiveCfg = Debug|Win32
+		{BD4B58D1-9D77-42C0-A2E8-DD93143B452E}.Debug|x86.Build.0 = Debug|Win32
+		{BD4B58D1-9D77-42C0-A2E8-DD93143B452E}.Release|x64.ActiveCfg = Release|x64
+		{BD4B58D1-9D77-42C0-A2E8-DD93143B452E}.Release|x64.Build.0 = Release|x64
+		{BD4B58D1-9D77-42C0-A2E8-DD93143B452E}.Release|x86.ActiveCfg = Release|Win32
+		{BD4B58D1-9D77-42C0-A2E8-DD93143B452E}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
