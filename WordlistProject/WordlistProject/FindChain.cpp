@@ -6,7 +6,6 @@
 #include <iostream>
 #include <queue>
 #include <vector>
-#include "Initialization.h"
 #include "WordlistProject.h"
 #include "FindChain.h"
 
@@ -108,7 +107,7 @@ bool FindChain::hasRing()
 	return true;
 }
 
-int FindChain::GetWordChain_NoRing()// char* result[],)
+int FindChain::GetWordChain_NoRing(char * result[])// char* result[],)
 {
 	int dist[27];
 	int use[26];
@@ -165,7 +164,7 @@ int FindChain::GetWordChain_NoRing()// char* result[],)
 			if (hasTail && (tail - 'a') != i) continue;
 			ans = i;
 		}
-	if (ans == 26) return dist[ans];
+	if (ans == 26) return 0;
 	int road[100];
 	int i = 0, child = ans;
 	road[i++] = ans;
@@ -178,12 +177,14 @@ int FindChain::GetWordChain_NoRing()// char* result[],)
 		if (edges[pa][pa].size() > 0) road[i++] = pa;
 		child = pa;
 	}
+	int ans_len = 0;
 	for (i--; i > 0; i--)
 	{
 		int u = road[i], v = road[i - 1];
-		printf("%s\n", edges[u][v][0].word);
+		result[ans_len] = edges[u][v][0].word;
+		ans_len++;
 	}
-	return dist[ans];
+	return ans_len;
 }
 
 void FindChain::dfs(int node, int dist, int num)
@@ -250,7 +251,7 @@ void FindChain::updateNode(bool node[])
 	}
 }
 
-int FindChain::GetWordChain_Ring()
+int FindChain::GetWordChain_Ring(char * result[])
 {
 	bool hasHead = 0;
 	bool hasTail = 0;
@@ -269,12 +270,7 @@ int FindChain::GetWordChain_Ring()
 			updateNode(node);
 		}
 	}
-
-	printf("%d\n", ansLen);
-	for (int i = 1; i <= ansNum; i++)
-	{
-		printf("%s\n", ansWords[i]);
-	}
-
-	return ansLen;
+	for (int i = 0;i<ansNum;i++)
+		result[i] = ansWords[i+1];
+	return ansNum;
 }

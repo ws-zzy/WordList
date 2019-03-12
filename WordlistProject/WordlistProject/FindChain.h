@@ -41,9 +41,9 @@ public:
 	FindChain(char* words[], int len, bool isWord,char h,char t);
 
 	bool hasRing();
-	int GetWordChain_NoRing();
+	int GetWordChain_NoRing(char * result[]);
 	void dfs(int node, int dist, int num);
-	int GetWordChain_Ring();
+	int GetWordChain_Ring(char * result[]);
 	void updateNode(bool node[]);
 
 };
