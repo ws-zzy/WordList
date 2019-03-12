@@ -38,8 +38,8 @@ public:
 	char head;
 	char tail;
 
-	FindChain(char* words[], int len, bool isWord,char h,char t);
-
+	FindChain();
+	void BuildMap(char* words[], int len, bool isWord, char h, char t);
 	bool hasRing();
 	int GetWordChain_NoRing(char * result[]);
 	void dfs(int node, int dist, int num);

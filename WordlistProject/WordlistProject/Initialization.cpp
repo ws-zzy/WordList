@@ -6,12 +6,11 @@
 #include "Initialization.h"
 #include "WordlistProject.h"
 
-Init::Init(int argc,char *argv[])
+Init::Init()
 {
 	w = false, c = false, r = false;
 	h = '\0', t = '\0';
 	n = 0;
-	Init::parse(argc,argv);
 }
 
 
@@ -63,13 +62,21 @@ void Init::parse(int argc, char *argv[])
 	if (t && !isalpha(t)) error(3);
 }
 
-void Init::InitWord()
+
+void Init::ReadFile(char* text)
 {
 	FILE *pf = fopen(file, "r");
-	char text[100000];
+	if (pf == NULL) error(6);
+	
 	size_t size = 0;
-	while ((text[size] = fgetc(pf)) != EOF) size++;
+	while ((text[size] = fgetc(pf)) != EOF)
+		size++;
+
 	text[size] = '\0';
+}
+
+void Init::InitWord(char* text)
+{
 	char stream[100];
 	size_t j = 0, i = 0;
 	while (1)

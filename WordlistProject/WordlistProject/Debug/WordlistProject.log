@@ -1,2 +1,6 @@
-﻿  FindChain.cpp
+﻿  Core.cpp
+  FindChain.cpp
+  Initialization.cpp
+  WordlistProject.cpp
+  正在生成代码...
   WordlistProject.vcxproj -> D:\se\WordList\WordlistProject\Debug\WordlistProject.exe

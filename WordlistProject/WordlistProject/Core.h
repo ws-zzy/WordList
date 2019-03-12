@@ -7,7 +7,8 @@ public:
 	int gen_chain_char(char* words[], int len, char* result[], char head, char tail, bool enable_loop);
 	void printf_chain(char* result[], int result_len);
 	Init init_word(int argc, char *argv[]);
-	void build_map(Init & init);
+	void read_file(Init & init, char * text);
+	void build_map(Init & init , char* text);
 };
 
 

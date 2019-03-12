@@ -12,8 +12,9 @@ public:
 	char*  words[10000];
 	int n;
 
-	Init(int argc,char *argv[]);
+	Init();
 	void parse(int argc, char *argv[]);
-	void InitWord();
+	void InitWord(char* text);
+	void ReadFile(char* text);
 };
 #endif

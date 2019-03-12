@@ -13,9 +13,9 @@
 
 
 
-FindChain::FindChain(char* words[], int len, bool isWord,char h,char t)
+FindChain::FindChain()
 {
-	head = h; tail = t;
+	head = 0; tail = 0;
 	ansLen = ansNum = 0;
 	for (int i = 0; i < NUM; i++)
 		for (int j = 0; j<NUM;j++)
@@ -29,7 +29,13 @@ FindChain::FindChain(char* words[], int len, bool isWord,char h,char t)
 		ansWords[i] = NULL;
 		nowWords[i] = NULL;
 	}
+}
 
+
+
+void FindChain::BuildMap(char * words[], int len, bool isWord, char h, char t)
+{
+	head = h; tail = t;
 	for (int i = 0; i < len; i++)
 	{
 		int llen = strlen(words[i]);
@@ -56,8 +62,6 @@ FindChain::FindChain(char* words[], int len, bool isWord,char h,char t)
 				canGo[i][++canGo[i][0]] = j;
 		}
 }
-
-
 
 bool FindChain::hasRing()
 {
