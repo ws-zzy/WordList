@@ -24,12 +24,24 @@
     <ClInclude Include="WordlistProject.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="Initialization.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="FindChain.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="WordlistProject.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Initialization.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="FindChain.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
