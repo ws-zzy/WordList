@@ -152,9 +152,16 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="cmdline.h" />
+    <ClInclude Include="Core.h" />
+    <ClInclude Include="FindChain.h" />
+    <ClInclude Include="Initialization.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="WordlistProject.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Core.cpp" />
+    <ClCompile Include="FindChain.cpp" />
+    <ClCompile Include="Initialization.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
