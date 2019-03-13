@@ -1,17 +1,20 @@
-#include "pch.h"
 #include <cstring>
 #include <string>
 #include <cstdio>
 #include <cstdlib>
 #include "Initialization.h"
-#include "WordlistProject.h"
+#include "error.h"
 
 Init::Init()
 {
+	memset(words,NULL,sizeof(words));
 	w = false, c = false, r = false;
 	h = '\0', t = '\0';
 	n = 0;
+	file = NULL;
 }
+
+
 
 void Init::parse(int argc, char *argv[])
 {
@@ -23,6 +26,7 @@ void Init::parse(int argc, char *argv[])
 			if (i >= argc) error(5);
 			if (strlen(argv[i]) > 1) error(3);
 			h = argv[i][0];
+			h = tolower(h);
 		}
 		else if (strcmp(argv[i], "-t") == 0 && !t)
 		{
@@ -30,6 +34,7 @@ void Init::parse(int argc, char *argv[])
 			if (i >= argc) error(5);
 			if (strlen(argv[i]) > 1) error(3);
 			t = argv[i][0];
+			t = tolower(t);
 		}
 		else if (strcmp(argv[i], "-r") == 0 && !r)
 		{
@@ -67,6 +72,7 @@ void Init::ReadFile(char* text)
 	if (pf == NULL) error(6);
 	
 	size_t size = 0;
+	if (pf != NULL) 
 	while ((text[size] = fgetc(pf)) != EOF)
 		size++;
 

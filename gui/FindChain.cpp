@@ -1,4 +1,3 @@
-#include "pch.h"
 #include <cstdio>
 #include <cstdlib>
 #include <string>
@@ -6,29 +5,27 @@
 #include <iostream>
 #include <queue>
 #include <vector>
-#include "WordlistProject.h"
+#include <algorithm>
 #include "FindChain.h"
-
+#include "error.h"
 
 
 
 
 FindChain::FindChain()
 {
+
 	head = 0; tail = 0;
 	ansLen = ansNum = 0;
-	for (int i = 0; i < NUM; i++)
-		for (int j = 0; j<NUM;j++)
-		{ 
-			canGo[i][j] = 0;
-			useEdge[i][j] = 0;
-		}
+	memset(canGo, 0, sizeof(canGo));
+	memset(useEdge, 0, sizeof(useEdge));
+	memset(ansWords, 0, sizeof(ansWords));
+	memset(nowWords, 0, sizeof(nowWords));
 
-	for (int i = 0; i < 105; i++)
-	{
-		ansWords[i] = NULL;
-		nowWords[i] = NULL;
-	}
+	for (int i = 0; i <26; i++)
+		for (int j = 0; j<26;j++)
+			edges[i][j].resize(0);
+
 }
 
 
@@ -69,19 +66,22 @@ bool FindChain::hasRing()
 	int n = 0;
 	bool p[NUM];
 
-	for (int i = 0; i < NUM; i++) inDegree[i] = 0;
+	for (int i = 0; i < NUM; i++) inDegree[i] = p[i] = 0;
+
 	for (int i = 0; i < NUM; i++)
 		for (int j = 0; j < NUM; j++)
 		{
 			std::vector<Wordedge> &e = edges[i][j];
 			if (i == j && e.size() > 1)
 				return true;
+			if (i == j) continue;
 			if (e.size() > 0)
 			{
 				inDegree[j]++;
 				p[i] = p[j] = true;
 			}
 		}
+
 	for (int i = 0; i < NUM; i++) n += p[i];
 
 	std::queue<int> Q;
@@ -162,6 +162,11 @@ int FindChain::GetWordChain_NoRing(char * result[])// char* result[],)
 		Q.pop();
 	}
 	int ans = 26;
+	for (int i = 0; i < NUM; i++)
+	{
+		if (edges[i][i].size() > 0 && dist[i] == 0)
+			 dist[i] = edges[i][i][0].key;
+	}
 	for (int i = 0; i < NUM; i++)
 		if (dist[ans] < dist[i])
 		{

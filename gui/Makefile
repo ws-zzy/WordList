@@ -15,9 +15,10 @@
 #CXX = clang++
 
 EXE = WordListGui
-SOURCES = main.cpp 
+SOURCES = wordgui.cpp 
 SOURCES += ./imgui/imgui_impl_glfw.cpp ./imgui/imgui_impl_opengl3.cpp 
 SOURCES += ./imgui/imgui.cpp ./imgui/imgui_draw.cpp ./imgui/imgui_demo.cpp ./imguifilesystem.cpp ./imgui/imgui_widgets.cpp
+SOURCES += Core.cpp error.cpp FindChain.cpp Initialization.cpp
 OBJS = $(addsuffix .o, $(basename $(notdir $(SOURCES))))
 UNAME_S := $(shell uname -s)
 
@@ -54,7 +55,6 @@ endif
 ifeq ($(UNAME_S), Darwin) #APPLE
 	ECHO_MESSAGE = "Mac OS X"
 	LIBS = -framework OpenGL -framework Cocoa -framework IOKit -framework CoreVideo
-	#LIBS += -L/usr/local/lib -lglfw3
 	LIBS += -L/usr/local/lib -lglfw
 
 	CXXFLAGS += -I./imgui -I/usr/local/include

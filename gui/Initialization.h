@@ -8,8 +8,8 @@ public:
 
 	bool w, c, r;
 	char h, t;
-	char* file;
-	char* words[10000];
+	char *file;
+	char*  words[10000];
 	int n;
 
 	Init();

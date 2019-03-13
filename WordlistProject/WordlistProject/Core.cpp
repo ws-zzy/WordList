@@ -6,14 +6,15 @@
 #include <iostream>
 #include <queue>
 #include <vector>
-#include "WordlistProject.h"
+#include "error.h"
 #include "FindChain.h"
 #include "Initialization.h"
 #include "Core.h"
 
-int Core::gen_chain_word(char * words[], int len, char * result[], char head, char tail, bool enable_loop)
+int Core::gen_chain_word(char* words[], int len, char* result[], char head, char tail, bool enable_loop)
 {
-	FindChain findchain(words, len, 0, head, tail);
+	FindChain findchain;
+	findchain.BuildMap(words, len, 1, head, tail);
 	if (enable_loop)
 		return findchain.GetWordChain_Ring(result);
 	else
@@ -24,9 +25,10 @@ int Core::gen_chain_word(char * words[], int len, char * result[], char head, ch
 	
 }
 
-int Core::gen_chain_char(char * words[], int len, char * result[], char head, char tail, bool enable_loop)
+int Core::gen_chain_char(char* words[], int len, char* result[], char head, char tail, bool enable_loop)
 {
-	FindChain findchain(words, len, 0, head, tail);
+	FindChain findchain;
+	findchain.BuildMap(words, len, 0, head, tail);
 	if (enable_loop)
 		return findchain.GetWordChain_Ring(result);
 	else
@@ -36,7 +38,7 @@ int Core::gen_chain_char(char * words[], int len, char * result[], char head, ch
 	}
 }
 
-void Core::printf_chain(char * result[], int result_len)
+void Core::printf_chain(char* result[], int result_len)
 {
 	printf("%d\n", result_len);
 	for (int i = 0; i < result_len; i++)
@@ -45,12 +47,19 @@ void Core::printf_chain(char * result[], int result_len)
 
 Init Core::init_word(int argc, char * argv[])
 {
-	return Init(argc, argv);
+	Init init;
+	init.parse(argc,argv);
+	return init;
 }
 
-void Core::build_map(Init & init)
+void Core::read_file(Init& init, char* text)
 {
-	init.InitWord();
+	init.ReadFile(text);
+}
+
+void Core::build_map(Init& init, char* text)
+{
+	init.InitWord(text);
 }
 
 

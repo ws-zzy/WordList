@@ -1,4 +1,3 @@
-#pragma once
 #ifndef FINDCHAIN_H
 #define FINDCHAIN_H
 #include <cstring>
@@ -28,7 +27,7 @@ public:
 	
 	int canGo[26][26];
 	std::vector<Wordedge> edges[26][26];
-	size_t useEdge[NUM][NUM];
+	size_t useEdge[26][26];
 	int ansLen;
 	int ansNum;
 	char* ansWords[105];
